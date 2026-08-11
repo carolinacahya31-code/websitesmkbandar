@@ -1,0 +1,6 @@
+{
+  "name": "SMK Negeri 1 Bandar",
+  "description": "Website Profil Resmi SMK Negeri 1 Bandar - Modern, Profesional, dan Informasi Lengkap Sekolah",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
