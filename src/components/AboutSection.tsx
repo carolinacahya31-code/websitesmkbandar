@@ -19,7 +19,17 @@ const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const AboutSection: React.FC = () => {
-  const [principalImgError, setPrincipalImgError] = useState(false);
+  const [imgSrc, setImgSrc] = useState(SCHOOL_INFO.principal.avatar);
+  const [hasError, setHasError] = useState(false);
+
+  const handleImageError = () => {
+    if (imgSrc === '/images/kepsek.jpg') {
+      // Try direct ibb URL as backup
+      setImgSrc('https://i.ibb.co/nsdm54Sw/2x3.jpg');
+    } else {
+      setHasError(true);
+    }
+  };
 
   return (
     <section id="tentang" className="py-20 bg-gray-50 relative overflow-hidden">
@@ -113,13 +123,13 @@ export const AboutSection: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 bg-black/20 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
                 <div className="relative shrink-0">
                   <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-xl overflow-hidden border-2 border-amber-400/80 shadow-lg bg-red-950 flex items-center justify-center">
-                    {!principalImgError ? (
+                    {!hasError ? (
                       <img
-                        src={SCHOOL_INFO.principal.avatar}
+                        src={imgSrc}
                         alt={SCHOOL_INFO.principal.name}
                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
                         referrerPolicy="no-referrer"
-                        onError={() => setPrincipalImgError(true)}
+                        onError={handleImageError}
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center p-2 text-center text-red-200">
