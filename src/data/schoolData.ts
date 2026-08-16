@@ -1,4 +1,5 @@
 import { Major, GalleryItem, SchoolStat, Facility, FaqItem } from '../types';
+import { KEPSEK_AVATAR_BASE64 } from './kepsekImage';
 
 export const SCHOOL_INFO = {
   name: 'SMK Negeri 1 Bandar',
@@ -18,7 +19,7 @@ export const SCHOOL_INFO = {
     name: 'Rudi Harto Gultom, S.Pd.',
     title: 'Kepala SMK Negeri 1 Bandar',
     message: 'Selamat datang di website resmi SMK Negeri 1 Bandar, Kabupaten Simalungun. Kami berkomitmen untuk menyelenggarakan pendidikan kejuruan berkualitas yang memadukan keahlian teknis unggul di bidang Teknik Otomasi Industri dan Teknik Kimia Industri, karakter disiplin, serta kesiapan kerja berstandar industri modern.',
-    avatar: '/images/kepsek.jpg'
+    avatar: KEPSEK_AVATAR_BASE64
   },
   socials: {
     facebook: 'https://facebook.com/smkn1bandarofficial',

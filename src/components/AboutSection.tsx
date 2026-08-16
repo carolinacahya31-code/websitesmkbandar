@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Users, GraduationCap, Briefcase, Building2, Calendar, Award, CheckCircle, ShieldCheck, Sparkles, Building, Monitor, Wrench, BookOpen, Trophy, Home, UserCheck } from 'lucide-react';
+import React from 'react';
+import { Users, GraduationCap, Briefcase, Building2, Calendar, Award, CheckCircle, ShieldCheck, Sparkles, Building, Monitor, Wrench, BookOpen, Trophy, Home } from 'lucide-react';
 import { SCHOOL_INFO, SCHOOL_STATS, FACILITIES } from '../data/schoolData';
 import { LogoPlaceholder } from './LogoPlaceholder';
 
@@ -19,18 +19,6 @@ const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const AboutSection: React.FC = () => {
-  const [imgSrc, setImgSrc] = useState(SCHOOL_INFO.principal.avatar);
-  const [hasError, setHasError] = useState(false);
-
-  const handleImageError = () => {
-    if (imgSrc === '/images/kepsek.jpg') {
-      // Try direct ibb URL as backup
-      setImgSrc('https://i.ibb.co/nsdm54Sw/2x3.jpg');
-    } else {
-      setHasError(true);
-    }
-  };
-
   return (
     <section id="tentang" className="py-20 bg-gray-50 relative overflow-hidden">
       {/* Decorative Subtle Background Elements */}
@@ -123,20 +111,11 @@ export const AboutSection: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 bg-black/20 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
                 <div className="relative shrink-0">
                   <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-xl overflow-hidden border-2 border-amber-400/80 shadow-lg bg-red-950 flex items-center justify-center">
-                    {!hasError ? (
-                      <img
-                        src={imgSrc}
-                        alt={SCHOOL_INFO.principal.name}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                        referrerPolicy="no-referrer"
-                        onError={handleImageError}
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center p-2 text-center text-red-200">
-                        <UserCheck className="w-8 h-8 text-amber-400 mb-1" />
-                        <span className="text-[10px] font-bold">Rudi Harto Gultom</span>
-                      </div>
-                    )}
+                    <img
+                      src={SCHOOL_INFO.principal.avatar}
+                      alt={SCHOOL_INFO.principal.name}
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   <div className="absolute -bottom-2 -right-1 bg-amber-400 text-red-950 text-[10px] font-black px-2 py-0.5 rounded-md shadow uppercase tracking-wide">
                     Kepsek
