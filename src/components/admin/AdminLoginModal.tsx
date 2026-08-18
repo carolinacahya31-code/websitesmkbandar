@@ -29,12 +29,6 @@ export const AdminLoginModal: React.FC = () => {
     }, 400);
   };
 
-  const handleQuickFill = () => {
-    setUsername('admin');
-    setPassword('admin123');
-    setErrorMsg('');
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-gray-100 relative text-left">
@@ -118,21 +112,6 @@ export const AdminLoginModal: React.FC = () => {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-            </div>
-
-            {/* Quick credentials helper banner */}
-            <div className="p-3 bg-gray-50 rounded-xl border border-gray-200/80 flex items-center justify-between text-xs text-gray-600">
-              <div className="space-y-0.5">
-                <span className="font-bold text-gray-800 block text-[11px]">Kredensial Default:</span>
-                <span className="font-mono text-[11px] text-gray-500">admin / admin123</span>
-              </div>
-              <button
-                type="button"
-                onClick={handleQuickFill}
-                className="text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
-              >
-                Isi Otomatis
-              </button>
             </div>
 
             <button

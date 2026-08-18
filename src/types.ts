@@ -22,8 +22,9 @@ export interface GalleryItem {
 
 export interface SchoolStat {
   label: string;
-  value: string;
-  iconName: string;
+  value: string | number;
+  iconName?: string;
+  suffix?: string;
   description: string;
 }
 
