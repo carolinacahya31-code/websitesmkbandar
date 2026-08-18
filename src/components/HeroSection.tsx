@@ -1,9 +1,11 @@
 import React from 'react';
 import { ArrowRight, Award, CheckCircle2, BookOpen, GraduationCap, Building2 } from 'lucide-react';
-import { SCHOOL_INFO } from '../data/schoolData';
+import { useSchoolContent } from '../context/SchoolContext';
 import { LogoPlaceholder } from './LogoPlaceholder';
 
 export const HeroSection: React.FC = () => {
+  const { schoolInfo, majors, schoolStats } = useSchoolContent();
+
   const handleScrollTo = (targetId: string) => {
     const element = document.getElementById(targetId);
     if (element) {
@@ -24,7 +26,7 @@ export const HeroSection: React.FC = () => {
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=1920"
-          alt="Gedung SMK Negeri 1 Bandar"
+          alt={schoolInfo.name}
           className="w-full h-full object-cover object-center transform scale-105 filter brightness-75"
         />
         {/* Red & Black Rich Gradient Overlay */}
@@ -43,17 +45,17 @@ export const HeroSection: React.FC = () => {
               <LogoPlaceholder variant="dark" />
               <span className="inline-flex items-center gap-1.5 bg-red-600/90 text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-red-400/40 shadow-sm">
                 <Award className="w-4 h-4 text-amber-300" />
-                <span>{SCHOOL_INFO.accreditation}</span>
+                <span>{schoolInfo.accreditation}</span>
               </span>
             </div>
 
             {/* School Title */}
             <div className="space-y-2">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-                SMK Negeri 1 <span className="text-red-400">Bandar</span>
+                {schoolInfo.name}
               </h1>
               <p className="text-base sm:text-lg md:text-xl font-medium text-red-100 italic border-l-4 border-red-500 pl-4 py-1 bg-red-950/40 rounded-r-lg">
-                "{SCHOOL_INFO.tagline}"
+                "{schoolInfo.tagline}"
               </p>
             </div>
 
@@ -115,7 +117,7 @@ export const HeroSection: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-sm font-bold text-white">Profil Keunggulan</h3>
-                      <p className="text-xs text-red-300">SMK Negeri 1 Bandar</p>
+                      <p className="text-xs text-red-300">{schoolInfo.name}</p>
                     </div>
                   </div>
                   <span className="text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-full uppercase">
@@ -126,19 +128,25 @@ export const HeroSection: React.FC = () => {
                 {/* Card Quick Features Grid */}
                 <div className="grid grid-cols-2 gap-3 text-left">
                   <div className="bg-red-950/60 border border-red-800/40 p-3 rounded-xl">
-                    <span className="text-2xl font-extrabold text-white block">2</span>
+                    <span className="text-2xl font-extrabold text-white block">{majors.length}</span>
                     <span className="text-xs text-red-200">Program Keahlian</span>
                   </div>
                   <div className="bg-red-950/60 border border-red-800/40 p-3 rounded-xl">
-                    <span className="text-2xl font-extrabold text-white block">403</span>
+                    <span className="text-2xl font-extrabold text-white block">
+                      {schoolStats[0]?.value || 403}
+                    </span>
                     <span className="text-xs text-red-200">Siswa Aktif</span>
                   </div>
                   <div className="bg-red-950/60 border border-red-800/40 p-3 rounded-xl">
-                    <span className="text-2xl font-extrabold text-white block">88%</span>
+                    <span className="text-2xl font-extrabold text-white block">
+                      {schoolStats[3]?.value || 88}%
+                    </span>
                     <span className="text-xs text-red-200">Serapan Kerja</span>
                   </div>
                   <div className="bg-red-950/60 border border-red-800/40 p-3 rounded-xl">
-                    <span className="text-2xl font-extrabold text-amber-400 block">20</span>
+                    <span className="text-2xl font-extrabold text-amber-400 block">
+                      {schoolStats[2]?.value || 20}
+                    </span>
                     <span className="text-xs text-red-200">Mitra Industri</span>
                   </div>
                 </div>
@@ -146,8 +154,10 @@ export const HeroSection: React.FC = () => {
                 {/* Program Keahlian Quick Info Banner */}
                 <div className="bg-gradient-to-r from-red-600 to-red-800 p-4 rounded-xl text-left flex items-center justify-between gap-3 shadow-md">
                   <div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Program Keahlian Industri</h4>
-                    <p className="text-xs text-red-100">Teknik Otomasi Industri & Kimia Industri</p>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Program Keahlian Vokasi</h4>
+                    <p className="text-xs text-red-100 truncate max-w-[180px]">
+                      {majors.map(m => m.code).join(' & ')}
+                    </p>
                   </div>
                   <button
                     onClick={() => handleScrollTo('program')}

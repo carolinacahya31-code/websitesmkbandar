@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, PhoneCall, Sparkles, ChevronRight } from 'lucide-react';
+import { Menu, X, PhoneCall, Sparkles, ChevronRight, Lock, LayoutDashboard } from 'lucide-react';
 import { LogoPlaceholder } from './LogoPlaceholder';
+import { useSchoolContent } from '../context/SchoolContext';
 
 export const Navbar: React.FC = () => {
+  const { schoolInfo, isAdminLoggedIn, setCurrentView, setIsLoginModalOpen } = useSchoolContent();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
@@ -68,14 +70,38 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span className="inline-flex items-center gap-1 bg-red-800 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-red-700">
-              <Sparkles className="w-3 h-3 text-amber-300" /> SMKN 1 Bandar
+              <Sparkles className="w-3 h-3 text-amber-300" /> {schoolInfo.name}
             </span>
-            <span className="text-red-100 font-medium">Jl. Sudirman Kel. Perdagangan III, Kec. Bandar, Kab. Simalungun</span>
+            <span className="text-red-100 font-medium truncate max-w-xl">{schoolInfo.address}</span>
           </div>
           <div className="flex items-center gap-4 text-red-200 text-xs">
             <span className="inline-flex items-center gap-1.5 font-medium">
-              <PhoneCall className="w-3 h-3 text-amber-300" /> (0622) 4481023
+              <PhoneCall className="w-3 h-3 text-amber-300" /> {schoolInfo.phone}
             </span>
+
+            {/* Quick Admin Trigger */}
+            <button
+              onClick={() => {
+                if (isAdminLoggedIn) {
+                  setCurrentView('admin');
+                } else {
+                  setIsLoginModalOpen(true);
+                }
+              }}
+              className="inline-flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-md border border-white/20 transition-colors cursor-pointer"
+            >
+              {isAdminLoggedIn ? (
+                <>
+                  <LayoutDashboard className="w-3 h-3 text-amber-300" />
+                  <span>Dashboard Admin</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-3 h-3 text-amber-300" />
+                  <span>Login Admin</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -98,7 +124,7 @@ export const Navbar: React.FC = () => {
             <LogoPlaceholder variant="compact" />
             <div className="flex flex-col border-l border-gray-200 pl-3">
               <span className="text-base sm:text-lg font-extrabold text-gray-900 tracking-tight leading-none group-hover:text-red-600 transition-colors">
-                SMK Negeri 1 Bandar
+                {schoolInfo.name}
               </span>
               <span className="text-[11px] font-semibold text-red-600 tracking-wide uppercase mt-1">
                 Kabupaten Simalungun
@@ -132,6 +158,24 @@ export const Navbar: React.FC = () => {
 
           {/* Action Button */}
           <div className="hidden lg:flex items-center gap-3">
+            {isAdminLoggedIn ? (
+              <button
+                onClick={() => setCurrentView('admin')}
+                className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-black text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer"
+              >
+                <LayoutDashboard className="w-4 h-4 text-amber-400" />
+                <span>Panel Admin</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs px-3.5 py-2.5 rounded-xl transition-all cursor-pointer"
+              >
+                <Lock className="w-3.5 h-3.5 text-red-600" />
+                <span>Admin</span>
+              </button>
+            )}
+
             <a
               href="#kontak"
               onClick={(e) => handleNavClick(e, '#kontak')}
@@ -160,7 +204,7 @@ export const Navbar: React.FC = () => {
             <div className="px-4 pt-3 pb-6 space-y-2 max-w-7xl mx-auto">
               <div className="p-2 mb-2 bg-red-50 rounded-lg border border-red-100 flex items-center justify-between">
                 <LogoPlaceholder variant="compact" />
-                <span className="text-xs font-bold text-red-800">SMKN 1 BANDAR</span>
+                <span className="text-xs font-bold text-red-800">{schoolInfo.name.toUpperCase()}</span>
               </div>
 
               {navLinks.map((link) => {
@@ -181,6 +225,23 @@ export const Navbar: React.FC = () => {
                   </a>
                 );
               })}
+
+              <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (isAdminLoggedIn) {
+                      setCurrentView('admin');
+                    } else {
+                      setIsLoginModalOpen(true);
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-sm py-3 rounded-xl"
+                >
+                  <Lock className="w-4 h-4 text-amber-400" />
+                  <span>{isAdminLoggedIn ? 'Buka Panel Admin' : 'Login Admin Website'}</span>
+                </button>
+              </div>
             </div>
           </div>
         )}

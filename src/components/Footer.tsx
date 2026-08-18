@@ -1,9 +1,11 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, ArrowUp, GraduationCap } from 'lucide-react';
-import { SCHOOL_INFO, MAJORS } from '../data/schoolData';
+import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, ArrowUp, GraduationCap, Lock, LayoutDashboard } from 'lucide-react';
+import { useSchoolContent } from '../context/SchoolContext';
 import { LogoPlaceholder } from './LogoPlaceholder';
 
 export const Footer: React.FC = () => {
+  const { schoolInfo, majors, isAdminLoggedIn, setCurrentView, setIsLoginModalOpen } = useSchoolContent();
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -43,7 +45,7 @@ export const Footer: React.FC = () => {
             
             <div>
               <h3 className="text-xl font-black text-white tracking-tight">
-                SMK Negeri 1 Bandar
+                {schoolInfo.name}
               </h3>
               <p className="text-xs text-red-300 font-semibold uppercase tracking-wider mt-0.5">
                 Kabupaten Simalungun, Sumatera Utara
@@ -57,7 +59,7 @@ export const Footer: React.FC = () => {
             {/* Accreditation Badge */}
             <div className="inline-flex items-center gap-2 bg-red-900/80 border border-red-700/60 px-3 py-1.5 rounded-xl text-xs font-mono text-amber-300">
               <GraduationCap className="w-4 h-4 text-amber-300" />
-              <span>NPSN: {SCHOOL_INFO.npsn} | {SCHOOL_INFO.accreditation}</span>
+              <span>NPSN: {schoolInfo.npsn} | {schoolInfo.accreditation}</span>
             </div>
           </div>
 
@@ -94,7 +96,7 @@ export const Footer: React.FC = () => {
               Program Keahlian
             </h4>
             <ul className="space-y-2 text-xs text-gray-300">
-              {MAJORS.map((m) => (
+              {majors.map((m) => (
                 <li key={m.id} className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                   <a href="#program" onClick={(e) => handleNavClick(e, '#program')} className="hover:text-amber-300 transition-colors">
@@ -114,15 +116,15 @@ export const Footer: React.FC = () => {
             <div className="space-y-2 text-xs text-gray-300">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <span>{SCHOOL_INFO.address}</span>
+                <span>{schoolInfo.address}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-red-400 shrink-0" />
-                <span>{SCHOOL_INFO.phone}</span>
+                <span>{schoolInfo.phone}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-red-400 shrink-0" />
-                <span className="truncate">{SCHOOL_INFO.email}</span>
+                <span className="truncate">{schoolInfo.email}</span>
               </div>
             </div>
 
@@ -131,29 +133,29 @@ export const Footer: React.FC = () => {
               <span className="text-[10px] font-bold text-gray-400 uppercase block mb-2">Media Sosial:</span>
               <div className="flex items-center gap-2">
                 <a
-                  href={SCHOOL_INFO.socials.facebook}
+                  href={schoolInfo.socials.facebook}
                   target="_blank"
                   rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-red-900 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
-                  aria-label="Facebook SMKN 1 Bandar"
+                  aria-label={`Facebook ${schoolInfo.name}`}
                 >
                   <Facebook className="w-4 h-4" />
                 </a>
                 <a
-                  href={SCHOOL_INFO.socials.instagram}
+                  href={schoolInfo.socials.instagram}
                   target="_blank"
                   rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-red-900 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
-                  aria-label="Instagram SMKN 1 Bandar"
+                  aria-label={`Instagram ${schoolInfo.name}`}
                 >
                   <Instagram className="w-4 h-4" />
                 </a>
                 <a
-                  href={SCHOOL_INFO.socials.youtube}
+                  href={schoolInfo.socials.youtube}
                   target="_blank"
                   rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-red-900 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
-                  aria-label="YouTube SMKN 1 Bandar"
+                  aria-label={`YouTube ${schoolInfo.name}`}
                 >
                   <Youtube className="w-4 h-4" />
                 </a>
@@ -171,19 +173,44 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Bottom Copyright & Scroll Top */}
+        {/* Bottom Copyright & Scroll Top & Admin Entry */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
           <p className="text-center sm:text-left">
-            © 2026 SMK Negeri 1 Bandar. Semua Hak Dilindungi.
+            © 2026 {schoolInfo.name}. Semua Hak Dilindungi.
           </p>
 
-          <button
-            onClick={scrollToTop}
-            className="inline-flex items-center gap-1.5 text-gray-300 hover:text-amber-300 transition-colors cursor-pointer bg-red-900/60 px-3 py-1.5 rounded-lg border border-red-800"
-          >
-            <span>Kembali ke Atas</span>
-            <ArrowUp className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (isAdminLoggedIn) {
+                  setCurrentView('admin');
+                } else {
+                  setIsLoginModalOpen(true);
+                }
+              }}
+              className="inline-flex items-center gap-1.5 text-gray-400 hover:text-amber-300 transition-colors cursor-pointer bg-black/30 hover:bg-red-950 px-3 py-1.5 rounded-lg border border-red-900/60"
+            >
+              {isAdminLoggedIn ? (
+                <>
+                  <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Dashboard Admin</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-3.5 h-3.5 text-red-400" />
+                  <span>Login Admin Web</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 text-gray-300 hover:text-amber-300 transition-colors cursor-pointer bg-red-900/60 px-3 py-1.5 rounded-lg border border-red-800"
+            >
+              <span>Kembali ke Atas</span>
+              <ArrowUp className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
       </div>

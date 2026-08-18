@@ -1,8 +1,10 @@
 import React from 'react';
 import { Target, Compass, CheckCircle2, Award, Sparkles, HeartHandshake, ShieldCheck, Zap } from 'lucide-react';
-import { VISI_MISI } from '../data/schoolData';
+import { useSchoolContent } from '../context/SchoolContext';
 
 export const VisionMissionSection: React.FC = () => {
+  const { schoolInfo, visiMisi } = useSchoolContent();
+
   const CORE_VALUES = [
     {
       title: 'SANTUN',
@@ -40,7 +42,7 @@ export const VisionMissionSection: React.FC = () => {
             <Compass className="w-4 h-4" /> Arah & Cita-Cita Sekolah
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
-            Visi & Misi <span className="text-red-600">SMK Negeri 1 Bandar</span>
+            Visi & Misi <span className="text-red-600">{schoolInfo.name}</span>
           </h2>
           <p className="text-gray-600 text-base leading-relaxed">
             Landasan filosofis dan langkah konkret sekolah dalam mewujudkan pendidikan vokasi berkualitas tinggi.
@@ -63,7 +65,7 @@ export const VisionMissionSection: React.FC = () => {
               </div>
 
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
-                "{VISI_MISI.visi}"
+                "{visiMisi.visi}"
               </h3>
 
               <div className="pt-4 border-t border-red-700/60 flex flex-wrap items-center gap-6 text-xs text-red-200">
@@ -93,13 +95,13 @@ export const VisionMissionSection: React.FC = () => {
               Misi Strategis Sekolah
             </h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Langkah-langkah terencana dan terukur yang dilaksanakan oleh seluruh civitas akademika untuk mencapai visi SMK Negeri 1 Bandar.
+              Langkah-langkah terencana dan terukur yang dilaksanakan oleh seluruh civitas akademika untuk mencapai visi {schoolInfo.name}.
             </p>
           </div>
 
           {/* Right Misi Cards Grid */}
           <div className="lg:col-span-8 space-y-4 text-left">
-            {VISI_MISI.misi.map((misiText, index) => (
+            {visiMisi.misi.map((misiText, index) => (
               <div
                 key={index}
                 className="bg-gray-50 hover:bg-white p-6 rounded-2xl border border-gray-200/80 hover:border-red-300 shadow-xs hover:shadow-md transition-all flex items-start gap-4 group"
@@ -122,7 +124,7 @@ export const VisionMissionSection: React.FC = () => {
         <div>
           <div className="text-center mb-10">
             <span className="text-xs font-bold text-red-600 uppercase tracking-wider block">Nilai Utama (Budaya Sekolah)</span>
-            <h3 className="text-2xl font-bold text-gray-900">Karakter Lulusan SMKN 1 Bandar</h3>
+            <h3 className="text-2xl font-bold text-gray-900">Karakter Lulusan {schoolInfo.name}</h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">

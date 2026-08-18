@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users, GraduationCap, Briefcase, Building2, Calendar, Award, CheckCircle, ShieldCheck, Sparkles, Building, Monitor, Wrench, BookOpen, Trophy, Home } from 'lucide-react';
-import { SCHOOL_INFO, SCHOOL_STATS, FACILITIES } from '../data/schoolData';
+import { useSchoolContent } from '../context/SchoolContext';
 import { LogoPlaceholder } from './LogoPlaceholder';
 
 const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
@@ -19,6 +19,8 @@ const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
 };
 
 export const AboutSection: React.FC = () => {
+  const { schoolInfo, schoolStats, facilities } = useSchoolContent();
+
   return (
     <section id="tentang" className="py-20 bg-gray-50 relative overflow-hidden">
       {/* Decorative Subtle Background Elements */}
@@ -33,7 +35,7 @@ export const AboutSection: React.FC = () => {
             <Sparkles className="w-4 h-4" /> Profil Sekolah
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
-            Tentang <span className="text-red-600">SMK Negeri 1 Bandar</span>
+            Tentang <span className="text-red-600">{schoolInfo.name}</span>
           </h2>
           <p className="text-gray-600 text-base leading-relaxed">
             Mengenal lebih dekat lembaga pendidikan kejuruan terdepan di Kabupaten Simalungun yang berdedikasi tinggi melahirkan generasi siap kerja, kreatif, dan berakhlak mulia.
@@ -49,7 +51,7 @@ export const AboutSection: React.FC = () => {
               <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                 <LogoPlaceholder variant="light" />
                 <span className="text-xs font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-md">
-                  NPSN: {SCHOOL_INFO.npsn}
+                  NPSN: {schoolInfo.npsn}
                 </span>
               </div>
 
@@ -58,7 +60,7 @@ export const AboutSection: React.FC = () => {
               </h3>
 
               <p className="text-gray-600 text-sm leading-relaxed">
-                <strong>SMK Negeri 1 Bandar</strong> didirikan pada tahun {SCHOOL_INFO.foundedYear} di wilayah strategis Kecamatan Bandar, Kabupaten Simalungun. Sejak awal berdiri, sekolah kami telah menjadi pilihan utama masyarakat dalam membina potensi peserta didik agar menguasai keterampilan vokasi yang dibutuhkan pasar kerja nasional.
+                <strong>{schoolInfo.name}</strong> didirikan pada tahun {schoolInfo.foundedYear} di wilayah strategis Kecamatan Bandar, Kabupaten Simalungun. Sejak awal berdiri, sekolah kami telah menjadi pilihan utama masyarakat dalam membina potensi peserta didik agar menguasai keterampilan vokasi yang dibutuhkan pasar kerja nasional.
               </p>
 
               <p className="text-gray-600 text-sm leading-relaxed">
@@ -89,7 +91,7 @@ export const AboutSection: React.FC = () => {
             <div className="p-4 bg-red-50 rounded-xl border border-red-100 text-left flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-red-800 uppercase block">Status Akreditasi</span>
-                <span className="text-sm font-semibold text-red-900">{SCHOOL_INFO.accreditation} oleh BAN-S/M</span>
+                <span className="text-sm font-semibold text-red-900">{schoolInfo.accreditation} oleh BAN-S/M</span>
               </div>
               <ShieldCheck className="w-8 h-8 text-red-600 shrink-0" />
             </div>
@@ -112,8 +114,8 @@ export const AboutSection: React.FC = () => {
                 <div className="relative shrink-0">
                   <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-xl overflow-hidden border-2 border-amber-400/80 shadow-lg bg-red-950 flex items-center justify-center">
                     <img
-                      src={SCHOOL_INFO.principal.avatar}
-                      alt={SCHOOL_INFO.principal.name}
+                      src={schoolInfo.principal.avatar}
+                      alt={schoolInfo.principal.name}
                       className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -124,13 +126,13 @@ export const AboutSection: React.FC = () => {
 
                 <div className="text-center sm:text-left my-auto">
                   <h4 className="text-lg sm:text-xl font-extrabold text-white tracking-tight leading-snug">
-                    {SCHOOL_INFO.principal.name}
+                    {schoolInfo.principal.name}
                   </h4>
                   <p className="text-xs text-amber-300/90 font-semibold mt-1">
-                    {SCHOOL_INFO.principal.title}
+                    {schoolInfo.principal.title}
                   </p>
                   <span className="inline-block mt-2 text-[11px] text-red-200/80 bg-red-900/60 px-2.5 py-1 rounded-md border border-red-700/50">
-                    SMK Negeri 1 Bandar
+                    {schoolInfo.name}
                   </span>
                 </div>
               </div>
@@ -139,7 +141,7 @@ export const AboutSection: React.FC = () => {
               <div className="space-y-2 relative bg-red-900/40 p-4 rounded-xl border border-red-800/40">
                 <span className="text-2xl text-amber-300 font-serif leading-none block">“</span>
                 <p className="text-red-100 text-xs sm:text-sm leading-relaxed italic">
-                  {SCHOOL_INFO.principal.message}
+                  {schoolInfo.principal.message}
                 </p>
                 <span className="text-2xl text-amber-300 font-serif leading-none block text-right">”</span>
               </div>
@@ -159,12 +161,12 @@ export const AboutSection: React.FC = () => {
         <div className="mb-20">
           <div className="text-center mb-8">
             <h3 className="text-xl font-bold text-gray-900">Statistik Utama Sekolah</h3>
-            <p className="text-xs text-gray-500">Capaian & Data Faktual SMK Negeri 1 Bandar</p>
+            <p className="text-xs text-gray-500">Capaian & Data Faktual {schoolInfo.name}</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {SCHOOL_STATS.map((stat, idx) => {
-              const IconComponent = ICON_MAP[stat.iconName] || Users;
+            {schoolStats.map((stat, idx) => {
+              const IconComponent = ICON_MAP[stat.iconName || 'Users'] || Users;
               return (
                 <div
                   key={idx}
@@ -174,7 +176,7 @@ export const AboutSection: React.FC = () => {
                     <IconComponent className="w-5 h-5" />
                   </div>
                   <div className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight group-hover:text-red-600 transition-colors">
-                    {stat.value}
+                    {stat.value}{stat.suffix || ''}
                   </div>
                   <div className="text-xs font-bold text-gray-800 mt-1">{stat.label}</div>
                   <div className="text-[10px] text-gray-500 mt-1 line-clamp-2">{stat.description}</div>
@@ -197,17 +199,17 @@ export const AboutSection: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FACILITIES.map((fac) => {
-              const IconComp = ICON_MAP[fac.iconName] || Building;
+            {facilities.map((fac) => {
+              const IconComp = ICON_MAP[fac.iconName || 'Building'] || Building;
               return (
                 <div
                   key={fac.id}
                   className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all group text-left"
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-48 overflow-hidden bg-gray-100">
                     <img
                       src={fac.image}
-                      alt={fac.title}
+                      alt={fac.title || fac.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 right-3 bg-red-600 text-white p-2 rounded-xl shadow-md">
@@ -216,7 +218,7 @@ export const AboutSection: React.FC = () => {
                   </div>
                   <div className="p-5 space-y-2">
                     <h4 className="text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">
-                      {fac.title}
+                      {fac.title || fac.name}
                     </h4>
                     <p className="text-xs text-gray-600 leading-relaxed">
                       {fac.description}

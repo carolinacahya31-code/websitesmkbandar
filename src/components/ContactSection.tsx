@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare, HelpCircle, CheckCircle2, ChevronDown, ChevronUp, AlertCircle, ExternalLink } from 'lucide-react';
-import { SCHOOL_INFO, FAQS } from '../data/schoolData';
+import { useSchoolContent } from '../context/SchoolContext';
 import { ContactFormData } from '../types';
 
 export const ContactSection: React.FC = () => {
+  const { schoolInfo, faqs, addContactMessage } = useSchoolContent();
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -18,6 +20,16 @@ export const ContactSection: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+    
+    // Save to context for admin review
+    addContactMessage({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || '-',
+      subject: formData.subject || 'Pesan dari Website',
+      message: formData.message
+    });
+
     setSubmitted(true);
   };
 
@@ -63,7 +75,7 @@ export const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-gray-900">Alamat Sekolah</h3>
-                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">{SCHOOL_INFO.address}</p>
+                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">{schoolInfo.address}</p>
                 </div>
               </div>
             </div>
@@ -76,7 +88,7 @@ export const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-gray-400 uppercase block">Telepon</span>
-                  <span className="text-xs font-bold text-gray-800">{SCHOOL_INFO.phone}</span>
+                  <span className="text-xs font-bold text-gray-800">{schoolInfo.phone}</span>
                 </div>
               </div>
 
@@ -86,7 +98,7 @@ export const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-gray-400 uppercase block">Email Resmi</span>
-                  <span className="text-xs font-bold text-gray-800 truncate block">{SCHOOL_INFO.email}</span>
+                  <span className="text-xs font-bold text-gray-800 truncate block">{schoolInfo.email}</span>
                 </div>
               </div>
             </div>
@@ -98,7 +110,7 @@ export const ContactSection: React.FC = () => {
               </div>
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase block">Jam Operasional Layanan</span>
-                <span className="text-xs font-bold text-gray-800">{SCHOOL_INFO.operatingHours}</span>
+                <span className="text-xs font-bold text-gray-800">{schoolInfo.operatingHours}</span>
               </div>
             </div>
 
@@ -135,7 +147,7 @@ export const ContactSection: React.FC = () => {
           {/* Right Column: Contact Form */}
           <div className="lg:col-span-7 bg-white p-8 rounded-3xl shadow-md border border-gray-100">
             <h3 className="text-xl font-extrabold text-gray-900 mb-2">Kirim Pesan Ke Sekolah</h3>
-            <p className="text-xs text-gray-500 mb-6">Isi formulir di bawah ini untuk terhubung langsung dengan tim humas SMKN 1 Bandar.</p>
+            <p className="text-xs text-gray-500 mb-6">Isi formulir di bawah ini untuk terhubung langsung dengan tim humas {schoolInfo.name}.</p>
 
             {submitted ? (
               <div className="p-8 bg-red-50 rounded-2xl border border-red-200 text-center space-y-4 animate-in fade-in duration-300">
@@ -144,7 +156,7 @@ export const ContactSection: React.FC = () => {
                 </div>
                 <h4 className="text-lg font-extrabold text-gray-900">Pesan Anda Berhasil Terkirim!</h4>
                 <p className="text-xs text-gray-600 max-w-md mx-auto leading-relaxed">
-                  Terima kasih, <strong>{formData.name}</strong>. Tim Humas SMK Negeri 1 Bandar akan merespons pesan Anda melalui email (<strong>{formData.email}</strong>) dalam kurun waktu 1x24 jam kerja.
+                  Terima kasih, <strong>{formData.name}</strong>. Tim Humas {schoolInfo.name} akan merespons pesan Anda melalui email (<strong>{formData.email}</strong>) dalam kurun waktu 1x24 jam kerja.
                 </p>
                 <button
                   onClick={handleReset}
@@ -241,11 +253,11 @@ export const ContactSection: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {FAQS.map((faq, index) => {
+            {faqs.map((faq, index) => {
               const isOpen = openFaqIndex === index;
               return (
                 <div
-                  key={index}
+                  key={faq.id || index}
                   className="bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all shadow-2xs"
                 >
                   <button
